@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Discord.Net.WebSocket">
+      <HintPath>..\..\..\..\..\.nuget\packages\discord.net.websocket\2.1.1\lib\netstandard2.0\Discord.Net.WebSocket.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
