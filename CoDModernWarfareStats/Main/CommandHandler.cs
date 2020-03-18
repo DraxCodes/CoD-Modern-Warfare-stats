@@ -17,11 +17,9 @@ namespace CoDModernWarfareStats.Main
 
         private async void setPlayStatus()
         {
-            await _client.SetGameAsync($"@Nano Help");
+            await _client.SetGameAsync($"$help");
             System.Threading.Thread.Sleep(5000);
-            await _client.SetGameAsync("先輩", "", Discord.ActivityType.Listening);
-            System.Threading.Thread.Sleep(5000);
-            await _client.SetGameAsync($"Working on a update which allows custom prefix ...");
+            await _client.SetGameAsync($"...");
             System.Threading.Thread.Sleep(5000);
             setPlayStatus();
         }
@@ -51,7 +49,7 @@ namespace CoDModernWarfareStats.Main
             }
             else
             {
-                ServerPrefix = ">";
+                ServerPrefix = "$";
             }
 
             int argPos = 0;
@@ -68,7 +66,7 @@ namespace CoDModernWarfareStats.Main
                     Console.ForegroundColor = ConsoleColor.White;
 
                     var embed = new EmbedBuilder();
-                    embed.WithTitle("Ouch! something went wrong senpai.");
+                    embed.WithTitle("Ouch! An error occurred.");
                     embed.WithDescription(result.ErrorReason);
                     embed.WithColor(255, 0, 0);
                     await context.Channel.SendMessageAsync("", false, embed.Build());
