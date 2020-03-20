@@ -8,7 +8,7 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 
-namespace CoDModernWarfareStats.Main
+namespace CodMwStats.Core.Main
 {
     class CommandHandler
     {

@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Discord.WebSocket;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Discord.WebSocket;
 
-namespace AccountLogic.ServerAccounts
+namespace CodMwStats.AccountLogic.ServerAccounts
 {
     public static class ServerAccounts
     {

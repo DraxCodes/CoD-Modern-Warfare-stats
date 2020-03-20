@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using AccountLogic.ServerAccounts;
-using Newtonsoft.Json;
+using CodMwStats.AccountLogic.ServerAccounts;
 
-namespace AccountLogic
+namespace CodMwStats.AccountLogic
 {
     class ServerDataStorage
     {

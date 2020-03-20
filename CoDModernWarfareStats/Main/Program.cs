@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using AccountLogic.ServerAccounts;
-using Discord;
+﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using Newtonsoft.Json;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
-namespace CoDModernWarfareStats.Main
+namespace CodMwStats.Core.Main
 {
     class Program : ModuleBase<SocketCommandContext>
     {

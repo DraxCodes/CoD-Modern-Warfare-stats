@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AccountLogic.ServerAccounts
+﻿namespace CodMwStats.AccountLogic.ServerAccounts
 {
     public class ServerAccount
     {
