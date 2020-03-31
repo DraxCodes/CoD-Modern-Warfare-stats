@@ -4,6 +4,7 @@ using Discord.WebSocket;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using CodMwStats.ApiWrapper;
 
 namespace CodMwStats.Core.Main
 {
@@ -28,6 +29,8 @@ namespace CodMwStats.Core.Main
                 Console.ForegroundColor = ConsoleColor.White;
             }
 
+            ApiHelper.InitializeClient();
+
             if (string.IsNullOrEmpty(Config.bot.token)) return;
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
@@ -37,14 +40,19 @@ namespace CodMwStats.Core.Main
             await _client.LoginAsync(TokenType.Bot, Config.bot.token);
             await _client.StartAsync();
             _handler = new CommandHandler();
-            await _handler.IntitializeAsync(_client);
+            await _handler.InitializeAsync(_client);
             await Task.Delay(-1);
-
         }
 
         private async Task Log(LogMessage msg)
         {
-            Console.WriteLine(msg.Message);
+            await Task.Run(() =>
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(DateTimeOffset.UtcNow.ToString("[d.MM.yyyy HH:mm:ss]"));
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"{msg.Message}");
+            });
         }
     }
 }

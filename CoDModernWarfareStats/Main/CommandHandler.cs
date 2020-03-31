@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using AccountLogic.ServerAccounts;
+﻿using CodMwStats.AccountLogic.ServerAccounts;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using System;
+using System.Threading.Tasks;
 
 namespace CodMwStats.Core.Main
 {
@@ -17,43 +14,43 @@ namespace CodMwStats.Core.Main
 
         private async void setPlayStatus()
         {
-            await _client.SetGameAsync($"$help");
+            await _client.SetGameAsync($"help");
             System.Threading.Thread.Sleep(5000);
             await _client.SetGameAsync($"...");
             System.Threading.Thread.Sleep(5000);
             setPlayStatus();
         }
 
-        public async Task IntitializeAsync(DiscordSocketClient client)
+        public async Task InitializeAsync(DiscordSocketClient client)
         {
             _client = client;
             _service = new CommandService();
-            await _service.AddModulesAsync(Assembly.GetEntryAssembly(), null);
+            await _service.AddModulesAsync(typeof(CodMwStats.Commands.Utilities).Assembly, null);
             _client.MessageReceived += HandleCommandAsync;
             _client.JoinedGuild += JoinedServer;
             setPlayStatus();
         }
 
 
-        private async Task HandleCommandAsync(SocketMessage s)
+        private async Task HandleCommandAsync(SocketMessage socketMessage)
         {
-            var msg = s as SocketUserMessage;
+            var msg = socketMessage as SocketUserMessage;
             if (msg == null) return;
             var context = new SocketCommandContext(_client, msg);
             if (context.User.IsBot) return;
 
-            var ServerPrefix = "";
+            var serverPrefix = "";
             if (!(context.Channel is IDMChannel))
             {
-                ServerPrefix = ServerAccounts.GetAccount((SocketGuild)context.Guild).Prefix;
+                serverPrefix = ServerAccounts.GetAccount((SocketGuild)context.Guild).Prefix;
             }
             else
             {
-                ServerPrefix = "$";
+                serverPrefix = ">";
             }
 
             int argPos = 0;
-            if (msg.HasStringPrefix(ServerPrefix, ref argPos)
+            if (msg.HasStringPrefix(serverPrefix, ref argPos)
                 || msg.HasMentionPrefix(_client.CurrentUser, ref argPos))
             {
                 var result = await _service.ExecuteAsync(context, argPos, null);
@@ -74,10 +71,13 @@ namespace CodMwStats.Core.Main
             }
         }
 
-        public async Task JoinedServer(SocketGuild Guild)
+        public async Task JoinedServer(SocketGuild guild)
         {
-            var target = Guild;
-            ServerAccounts.GetAccount(target);
+            await Task.Run(() =>
+            {
+                var target = guild;
+                ServerAccounts.GetAccount(target);
+            });
         }
     }
 }
