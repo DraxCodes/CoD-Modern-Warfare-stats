@@ -14,9 +14,9 @@ namespace CodMwStats.Core.Main
 
         private async void setPlayStatus()
         {
-            await _client.SetGameAsync($"help");
+            await _client.SetGameAsync($">help");
             System.Threading.Thread.Sleep(5000);
-            await _client.SetGameAsync($"...");
+            await _client.SetGameAsync($"Call of Duty Modern Warfare");
             System.Threading.Thread.Sleep(5000);
             setPlayStatus();
         }

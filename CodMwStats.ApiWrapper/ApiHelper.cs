@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using CodMwStats.ApiWrapper.Models;
 
 namespace CodMwStats.ApiWrapper
 {

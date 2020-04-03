@@ -10,27 +10,13 @@ using Newtonsoft.Json;
 
 namespace CodMwStats.Commands.MainStatsCommands
 {
-    public class BattleNetStats : ModuleBase<SocketCommandContext>
+    public class PS4Stats : ModuleBase<SocketCommandContext>
     {
-        [Command("Stats-battlenet")]
-        [Alias("StatsBN")]
-        public async Task StatsBN([Remainder] string userName)
+        [Command("Stats-psn")]
+        [Alias("Statspsn")]
+        public async Task StatsPSN([Remainder] string userName)
         {
-            if (userName.Contains("#"))
-            {
-                userName = userName.Replace('#', '%');
-            }
-            else
-            {
-                var errorEmbed = new EmbedBuilder();
-                errorEmbed.WithTitle("Ouch! An error occurred.");
-                errorEmbed.WithDescription("Invalid BattleNet username.");
-                errorEmbed.WithColor(255, 0, 0);
-                await Context.Channel.SendMessageAsync("", false, errorEmbed.Build());
-                return;
-            }
-
-            var jsonAsString = await ApiProcessor.GetUser($"https://api.tracker.gg/api/v2/modern-warfare/standard/profile/battlenet/{userName}");
+            var jsonAsString = await ApiProcessor.GetUser($"https://api.tracker.gg/api/v2/modern-warfare/standard/profile/psn/{userName}");
             var apiData = JsonConvert.DeserializeObject<ModerWarfareApiOutput>(jsonAsString);
 
             var name = apiData.Data.PlatformInfo.PlatformUserHandle;
