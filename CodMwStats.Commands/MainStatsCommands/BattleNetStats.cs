@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CodMwStats.ApiWrapper;
 using CodMwStats.ApiWrapper.Models;
 using Discord;
@@ -33,48 +30,29 @@ namespace CodMwStats.Commands.MainStatsCommands
             var jsonAsString = await ApiProcessor.GetUser($"https://api.tracker.gg/api/v2/modern-warfare/standard/profile/battlenet/{userName}");
             var apiData = JsonConvert.DeserializeObject<ModerWarfareApiOutput>(jsonAsString);
 
-            var name = apiData.Data.PlatformInfo.PlatformUserHandle;
-            var pfp = apiData.Data.PlatformInfo.AvatarUrl;
-            var playTime = apiData.Data.Segment[0].Stats.TimePlayedTotal.Value;
-            var matches = apiData.Data.Segment[0].Stats.TotalGamesPlayed.Value;
-            var levelImg = apiData.Data.Segment[0].Stats.Level.Metadata.IconUrl;
-            var level = apiData.Data.Segment[0].Stats.Level.Value;
-            var levelper = apiData.Data.Segment[0].Stats.LevelProgression.Value;
-            var kd = apiData.Data.Segment[0].Stats.KdRatio.Value;
-            var kills = apiData.Data.Segment[0].Stats.Kills.Value;
-            var WinPer = apiData.Data.Segment[0].Stats.WlRatio.Value;
-            var wins = apiData.Data.Segment[0].Stats.Wins.Value;
-            var bestKillsreak = apiData.Data.Segment[0].Stats.LongestKillstreak.Value;
-            var losses = apiData.Data.Segment[0].Stats.Losses.Value;
-            var deaths = apiData.Data.Segment[0].Stats.Deaths.Value;
-            var avgLife = apiData.Data.Segment[0].Stats.AverageLife.Value;
-            var assists = apiData.Data.Segment[0].Stats.Assists.Value;
-            var Score = apiData.Data.Segment[0].Stats.CareerScore.Value;
+            var player = new ModerWarfarePlayer(apiData);
 
-            var embed = new EmbedBuilder();
-            embed.WithTitle($"Stats of {name}");
-            embed.WithThumbnailUrl(pfp);
-            embed.AddField("Play Time:", playTime);
-            embed.AddField("Matches:", matches);
-            embed.AddField("Level:", level);
-            embed.AddField("Level Progression:", levelper);
-            embed.WithImageUrl(levelImg.ToString());
-            embed.AddField("K/D Ratio:", kd);
-            embed.AddField("Kills:", kills);
-            embed.AddField("Win %:", WinPer);
-            embed.AddField("Wins:", wins);
+            var embed = new EmbedBuilder()
+                .WithTitle($"Stats of {player.Name}")
+                .WithThumbnailUrl(player.ProfilePicURl.AbsoluteUri)
+                .AddField("Play Time:", player.Playtime)
+                .AddField("Matches:", player.Matches)
+                .AddField("Level:", player.Level)
+                .AddField("Level Progression:", player.LevelProgression)
+                .WithImageUrl(player.LevelImageUrl.AbsoluteUri)
+                .AddField("K/D Ratio:", player.KillDeathRatio)
+                .AddField("Kills:", player.Kills)
+                .AddField("Win %:", player.WinLossRation)
+                .AddField("Wins:", player.Wins)
+                .AddField("Best Killstreak:", player.BestKillStreak)
+                .AddField("Losses:", player.Losses)
+                .AddField("Deaths:", player.Deaths)
+                .AddField("Avg. Life:", player.AverageLife)
+                .AddField("Assists:", player.Assists)
+                .AddField("Score:", player.Score)
+                .WithColor(new Color(239, 133, 141));
 
-            embed.AddField("Best Killstreak:", bestKillsreak);
-            embed.AddField("Losses:", losses);
-            embed.AddField("Deaths:", deaths);
-            embed.AddField("Avg. Life:", avgLife);
-            embed.AddField("Assists:", assists);
-            embed.AddField("Score:", Score);
-
-
-            embed.WithColor(new Color(239, 133, 141));
-
-            var msg = await Context.Channel.SendMessageAsync("", false, embed.Build());
+            await Context.Channel.SendMessageAsync(embed: embed.Build());
         }
     }
 }
